@@ -25,25 +25,29 @@
         Darth Vader
         <br>
         <img class='img-thumbnail' src="assets/images/darthVader.jpg" alt="">
-        <br> 120
+        <br>
+        <p id="darthVaderValue">120</p>
       </div>
       <div id="hanSolo">
         Han Solo
         <br>
         <img class='img-thumbnail' src="assets/images/hanSolo.jpg" alt="">
-        <br> 100
+        <br>
+        <p id="darthVaderValue">100</p>
       </div>
       <div id="chewbecca">
         Chewbecca
         <br>
         <img class='img-thumbnail' src="assets/images/chewbecca.jpg" alt="">
-        <br> 150
+        <br>
+        <p id="darthVaderValue">150</p>
       </div>
       <div id="yoda">
         Yoda
         <br>
         <img class='img-thumbnail' src="assets/images/yoda.jpg" alt="">
-        <br> 180
+        <br>
+        <p id="darthVaderValue">180</p>
       </div>
     </div>
     <h2>Your character</h2>
@@ -51,7 +55,8 @@
     <h2>Enemies Available To Attack</h2>
     <div id="enemies"></div>
     <h2>Fight Section</h2>
-    <button>Attack</button>
+    <button id="attack">Attack</button>
+    <div id="message"></div>
     <h2>Defender</h2>
     <div id="defender"></div>
   </div>
@@ -60,22 +65,28 @@
   <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
   <script>
     $(document).ready(function () {
-      var darthVaderHP = 100;
-      var hanSoloHP = 100;
-      var chewbeccaHP = 100;
-      var yodaHP = 100;
+      var characterHP = {
+        darthVader: 120,
+        hanSolo: 100,
+        chewbecca: 150,
+        yoda: 180
+      }
       var characterName = {
         darthVader: "Darth Vader",
         hanSolo: "Han Solo",
         chewbecca: "Chewbecca",
-        yoda: "Yoda",
+        yoda: "Yoda"
       }
-      // Counter Attack Points 
-      var cap = 8;
-      // Attack Points
-      var ap = 6;
+      // Counter Attack Points
+      var ap = {
+        darthVader: 8,
+        hanSolo: 5,
+        chewbecca: 20,
+        yoda: 25
+      }
 
       function selectCharacter() {
+
         $("#darthVader, #hanSolo, #chewbecca, #yoda").on("click", function (event) {
           // remove characters from the start div
           $("#start").empty();
@@ -83,7 +94,7 @@
           // display selected character
           var chosenCharacter = event.currentTarget.id;
           console.log(chosenCharacter);
-          $("#character").html(`<div id=${chosenCharacter}> ${characterName[chosenCharacter]}<br><img class='img-thumbnail' src="assets/images/${chosenCharacter}.jpg" alt=""><br> 100</div>`)
+          $("#character").html(`<div id=${chosenCharacter}> ${characterName[chosenCharacter]}<br><img class='img-thumbnail' src="assets/images/${chosenCharacter}.jpg" alt=""><br><p id="${chosenCharacter}Value">${characterHP[chosenCharacter]}</p></div>`)
 
           // display enemies
           var enemies = Object.keys(characterName).filter(enemy => {
@@ -91,7 +102,7 @@
           });
           enemies.forEach((enemy) => {
             // append enemies
-            $("#enemies").append(`<div id=${enemy}> ${characterName[enemy]}<br><img class='img-thumbnail' src="assets/images/${enemy}.jpg" alt=""><br> 100</div>`);
+            $("#enemies").append(`<div id=${enemy}> ${characterName[enemy]}<br><img class='img-thumbnail' src="assets/images/${enemy}.jpg" alt=""><br> <p id="${enemy}Value">${characterHP[enemy]}</p></div>`);
             $(`#${enemy}`).css({ "background-color": "red", "border-color": "black", "border-width": "1px", "padding": "2px" });
           })
           // change background color to red
@@ -99,26 +110,64 @@
             return "#" + enemy
           }).toString()
           console.log(enemyIDs);
-          $(enemyIDs).one("click", function (enemy) {
-            var enemy = enemy.currentTarget.id;
-            // remove enemy from enemies div
-            $("#" + enemy).remove();
-            console.log("#" + enemy);
 
-            // add enemy to defender div
-            $("#defender").html(`<div id=${enemy}> ${characterName[enemy]}<br><img class='img-thumbnail' src="assets/images/${enemy}.jpg" alt=""><br> 100</div>`)
-            // $(`#${enemy}`).css({ "background-color": "red", "border-color": "black", "border-width": "1px", "padding": "2px" });
+          // choose one character
+          var click = 0
+
+          $(enemyIDs).one("click", function (enemy) {
+            click++
+            console.log(click)
+            if (click === 1) {
+              var enemy = enemy.currentTarget.id;
+              // remove enemy from enemies div
+              $("#" + enemy).remove();
+              console.log("#" + enemy);
+
+              // add enemy to defender div
+              $("#defender").html(`<div id=${enemy}> ${characterName[enemy]}<br><img class='img-thumbnail' src="assets/images/${enemy}.jpg" alt=""><br> <p id="${enemy}Value">${characterHP[enemy]}</p></div>`)
+              // $(`#${enemy}`).css({ "background-color": "red", "border-color": "black", "border-width": "1px", "padding": "2px" });
+            }
           });
         })
       }
 
       function attack() {
-        $("button").on("click", function () {
+        var clicks = 0;
+        $("#attack").on("click", function (event) {
+          clicks++
 
+          // determine character and enemy
+          var character = $("#character").children()[0].id
+          var enemy = $("#defender").children()[0].id
+
+          characterHP[character] -= ap[enemy]
+          console.log(characterHP[character] + ":" + ap[enemy])
+          $("#" + character + "Value").html(characterHP[character])
+          characterHP[enemy] -= ap[character] * clicks
+          console.log(characterHP[enemy] + ":" + ap[character])
+          $("#" + enemy + "Value").html(characterHP[enemy])
+
+          if (characterHP[character] > 0 && characterHP[enemy] > 0) {
+            $("#message").html(`<p>You attacked ${characterName[enemy]} for ${ap[character] * clicks} damage.</p><p>${characterName[enemy]} attacked you back for ${ap[enemy]} damage.`)
+          } else if (characterHP[enemy] < 0) {
+            $("#message").html(`<p>You have defeated ${characterName[enemy]}, you can choose to fight another enemy.`)
+            $("#defender").empty();
+          } else {
+            $("#message").text("You have been defeated... GAME OVER!!");
+            $("#message").append("<br><button id='restart'>Restart</button>")
+          }
         });
       }
 
       selectCharacter();
+      attack();
+
+      $(document).on("click", "#restart", function () {
+        console.log(event);
+        console.log("restart clicked!")
+        $(".container").html('<h2>Rules: 1) select character 2) select defender 3) Attack! </h2><div id="start"><div id="darthVader">Darth Vader<br><img class="img-thumbnail" src="assets/images/darthVader.jpg" alt=""><br><p id="darthVaderValue">120</p></div><div id="hanSolo">Han Solo<br><img class="img-thumbnail" src="assets/images/hanSolo.jpg" alt=""><br><p id="darthVaderValue">100</p></div><div id="chewbecca">Chewbecca<br><img class="img-thumbnail" src="assets/images/chewbecca.jpg" alt=""><br><p id="darthVaderValue">150</p></div><div id="yoda">Yoda<br><img class="img-thumbnail" src="assets/images/yoda.jpg" alt=""><br><p id="darthVaderValue">180</p></div></div><h2>Your character</h2><div id="character"></div><h2>Enemies Available To Attack</h2><div id="enemies"></div><h2>Fight Section</h2><button id="attack">Attack</button><div id="message"></div><h2>Defender</h2><div id="defender"></div>')
+      })
+
 
 
 

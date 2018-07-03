@@ -36,3 +36,9 @@ h2 {
   border: greenyellow 2px solid;
   width: 25%;
 }
+
+#message {
+  background-color: black;
+  color: yellow;
+  font-family: Arial, Helvetica, sans-serif;
+}
