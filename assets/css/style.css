@@ -1,0 +1,31 @@
+html {
+  height: 100%;
+}
+
+body {
+  background: url(../images/backGround.jpg);
+  background-size: cover;
+  background-position: center;
+}
+
+#heading {
+  background: black;
+  color: yellow;
+  text-align: center;
+  font-family: 'Monoton', cursive;
+}
+
+h2 {
+  color: yellow;
+  -webkit-text-stroke: 1px black;
+}
+
+#start {
+  display: flex;
+}
+
+#darthVader, #hanSolo, #chewbecca, #yoda {
+  background: white;
+  text-align: center;
+  border: greenyellow 2px solid;
+}
