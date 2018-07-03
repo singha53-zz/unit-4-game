@@ -18,14 +18,21 @@ body {
 h2 {
   color: yellow;
   -webkit-text-stroke: 1px black;
+  text-emphasis: bold;
 }
 
-#start {
+#start,
+#enemies,
+#defender {
   display: flex;
 }
 
-#darthVader, #hanSolo, #chewbecca, #yoda {
+#darthVader,
+#hanSolo,
+#chewbecca,
+#yoda {
   background: white;
   text-align: center;
   border: greenyellow 2px solid;
+  width: 25%;
 }
