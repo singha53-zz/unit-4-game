@@ -1,16 +1,18 @@
 # unit-4-game
+
 STARS WARS - RPG game
 
-![Logo of the project](https://upload.wikimedia.org/wikipedia/en/thumb/6/67/2018_FIFA_World_Cup.svg/227px-2018_FIFA_World_Cup.svg.png)
+![Logo of the project](assets/images/starwarsGame.png)
 
 # STARS WARS - RPG game
-> FIFA World Cup 2018 Hangman Game
 
-A cool hangman game where the user guesses countries that are participating in the 2018 FIFA World Cup.
+> Rules
+
+An role playing game in which the user selects a character and then must defeat all remaining enemies through battle. Note: The selected charater's attack power (attack points) increases with the number of attacks whereas the defender's attacks power (counter attack points) remain the same.
 
 ## Installing / Getting started
 
-Simply head [here](http://amritsingh.ca/Word-Guess-Game/) to to start playing!
+Simply head [here](http://amritsingh.ca/unit-4-game/) to to start playing!
 
 ## Developing
 
@@ -23,11 +25,11 @@ cd Word-Guess-Game/
 
 ## Scripting/Programming Languages
 
-* HTML, CSS, JavaScript
+- HTML, CSS, JavaScript (and JQuery)
 
 ## Features
 
-* non-stop playing!
+- non-stop playing!
 
 ## Contributing
 
