@@ -19,7 +19,7 @@
   </header>
 
   <div class="container">
-    <h2>Rules: 1) select character 2) select defender 3) Attack! </h2>
+    <h2>Rules: 1) select character 2) select defender 3) Attack! 4) Repeat 2 and 3</h2>
     <div id="start">
       <div id="darthVader">
         Darth Vader
@@ -65,27 +65,8 @@
   <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
   <script>
     $(document).ready(function () {
-      var characterHP = {
-        darthVader: 120,
-        hanSolo: 100,
-        chewbecca: 150,
-        yoda: 180
-      }
-      var characterName = {
-        darthVader: "Darth Vader",
-        hanSolo: "Han Solo",
-        chewbecca: "Chewbecca",
-        yoda: "Yoda"
-      }
-      // Counter Attack Points
-      var ap = {
-        darthVader: 8,
-        hanSolo: 5,
-        chewbecca: 20,
-        yoda: 25
-      }
 
-      function selectCharacter() {
+      function selectCharacter(characterHP, characterName, ap) {
 
         $("#darthVader, #hanSolo, #chewbecca, #yoda").on("click", function (event) {
           // remove characters from the start div
@@ -125,13 +106,28 @@
 
               // add enemy to defender div
               $("#defender").html(`<div id=${enemy}> ${characterName[enemy]}<br><img class='img-thumbnail' src="assets/images/${enemy}.jpg" alt=""><br> <p id="${enemy}Value">${characterHP[enemy]}</p></div>`)
-              // $(`#${enemy}`).css({ "background-color": "red", "border-color": "black", "border-width": "1px", "padding": "2px" });
             }
           });
         })
       }
 
-      function attack() {
+      function displayEnemy(remainingEnemies, characterName, characterHP) {
+        console.log(remainingEnemies.toString())
+        $(remainingEnemies.toString()).one("click", function (enemy) {
+          var enemy = enemy.currentTarget.id;
+          console.log(characterName)
+          // remove enemy from enemies div
+          $("#" + enemy).remove();
+          console.log("#" + enemy);
+
+          // add enemy to defender div
+          $("#defender").html(`<div id=${enemy}> ${characterName[enemy]}<br><img class='img-thumbnail' src="assets/images/${enemy}.jpg" alt=""><br> <p id="${enemy}Value">${characterHP[enemy]}</p></div>`)
+          $("#defender").show();
+        });
+      }
+
+      function attack(characterHP, characterName, ap) {
+        var defeatedEnemyList = [];
         var clicks = 0;
         $("#attack").on("click", function (event) {
           clicks++
@@ -140,18 +136,34 @@
           var character = $("#character").children()[0].id
           var enemy = $("#defender").children()[0].id
 
-          characterHP[character] -= ap[enemy]
-          console.log(characterHP[character] + ":" + ap[enemy])
-          $("#" + character + "Value").html(characterHP[character])
           characterHP[enemy] -= ap[character] * clicks
           console.log(characterHP[enemy] + ":" + ap[character])
           $("#" + enemy + "Value").html(characterHP[enemy])
 
           if (characterHP[character] > 0 && characterHP[enemy] > 0) {
+            characterHP[character] -= ap[enemy]
+            console.log(characterHP[character] + ":" + ap[enemy])
+            $("#" + character + "Value").html(characterHP[character])
+
             $("#message").html(`<p>You attacked ${characterName[enemy]} for ${ap[character] * clicks} damage.</p><p>${characterName[enemy]} attacked you back for ${ap[enemy]} damage.`)
-          } else if (characterHP[enemy] < 0) {
-            $("#message").html(`<p>You have defeated ${characterName[enemy]}, you can choose to fight another enemy.`)
-            $("#defender").empty();
+          } else if (characterHP[character] > 0 && characterHP[enemy] < 0) {
+            defeatedEnemyList.push(enemy);
+            $("#message").html(`<p>You have defeated ${characterName[enemy]}, you can choose to fight another enemy.</p>`)
+            $("#defender").hide();
+            // console.log(characterHP[enemy])
+            // console.log(characterHP + characterName + ap)
+            var remainingEnemies = [];
+            for (let i = 0; i < $("#enemies").children().length; i++) {
+              remainingEnemies.push("#" + $("#enemies").children()[i].id)
+            }
+            // console.log(remainingEnemies)
+            displayEnemy(remainingEnemies, characterName, characterHP)
+            // attack2(characterHP, characterName, ap);
+
+            if (defeatedEnemyList.length === 3) {
+              $("#message").text("You win!! GAME OVER!!");
+              $("#message").append("<br><button id='restart'>Restart</button>")
+            }
           } else {
             $("#message").text("You have been defeated... GAME OVER!!");
             $("#message").append("<br><button id='restart'>Restart</button>")
@@ -159,17 +171,45 @@
         });
       }
 
-      selectCharacter();
-      attack();
+      function attack2(characterHP, characterName, ap) {
+        console.log(characterHP)
+        console.log(characterName)
+        console.log(ap)
+      }
+
+      function reset() {
+        var characterHP = {
+          darthVader: 120,
+          hanSolo: 100,
+          chewbecca: 150,
+          yoda: 180
+        }
+        var characterName = {
+          darthVader: "Darth Vader",
+          hanSolo: "Han Solo",
+          chewbecca: "Chewbecca",
+          yoda: "Yoda"
+        }
+        // Counter Attack Points
+        var ap = {
+          darthVader: 8,
+          hanSolo: 5,
+          chewbecca: 20,
+          yoda: 25
+        }
+        selectCharacter(characterHP, characterName, ap);
+        attack(characterHP, characterName, ap);
+      }
 
       $(document).on("click", "#restart", function () {
         console.log(event);
         console.log("restart clicked!")
         $(".container").html('<h2>Rules: 1) select character 2) select defender 3) Attack! </h2><div id="start"><div id="darthVader">Darth Vader<br><img class="img-thumbnail" src="assets/images/darthVader.jpg" alt=""><br><p id="darthVaderValue">120</p></div><div id="hanSolo">Han Solo<br><img class="img-thumbnail" src="assets/images/hanSolo.jpg" alt=""><br><p id="darthVaderValue">100</p></div><div id="chewbecca">Chewbecca<br><img class="img-thumbnail" src="assets/images/chewbecca.jpg" alt=""><br><p id="darthVaderValue">150</p></div><div id="yoda">Yoda<br><img class="img-thumbnail" src="assets/images/yoda.jpg" alt=""><br><p id="darthVaderValue">180</p></div></div><h2>Your character</h2><div id="character"></div><h2>Enemies Available To Attack</h2><div id="enemies"></div><h2>Fight Section</h2><button id="attack">Attack</button><div id="message"></div><h2>Defender</h2><div id="defender"></div>')
+        reset()
       })
 
 
-
+      reset();
 
 
     });
