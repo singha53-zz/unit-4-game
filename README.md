@@ -19,17 +19,20 @@ Simply head [here](http://amritsingh.ca/unit-4-game/) to to start playing!
 Feel free to modify/expand upon my code for your purposes!
 
 ```shell
-git clone https://github.com/singha53/Word-Guess-Game.git
-cd Word-Guess-Game/
+git clone https://github.com/singha53/unit-4-game.git
+cd unit-4-game/
 ```
 
 ## Scripting/Programming Languages
 
-- HTML, CSS, JavaScript (and JQuery)
+- HTML, CSS (including Bootstrap), JavaScript (including jQuery)
 
 ## Features
 
-- non-stop playing!
+- single player game
+- four characters to choose from
+- must defeat all enemies to win!
+- very FUN!
 
 ## Contributing
 
@@ -42,8 +45,8 @@ Even though this information can be found inside the project on machine-readable
 format like in a .json file, it's good to include a summary of most useful
 links to humans using your project. You can include links like:
 
-- Game homepage: http://amritsingh.ca/Word-Guess-Game/
-- Repository: https://github.com/singha53/Word-Guess-Game
+- Game homepage: http://amritsingh.ca/unit-4-game/
+- Repository: https://github.com/singha53/unit-4-game
 
 ## Licensing
 
