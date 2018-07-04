@@ -97,7 +97,7 @@ $(document).ready(function() {
     $('#attack').on('click', function(event) {
       // only works if characters have been chosen, the attack button will not fire in the start of the game when no characters have been chosen!
 
-      if ($('#start').children().length !== 4) {
+      if ($('#start').children().length !== 4 && $('#defender').children().length !== 0) {
         // 1) determine character and enemy
         var character = $('#character').children()[0].id;
         var enemy = $('#defender').children()[0].id;
