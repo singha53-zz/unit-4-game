@@ -1,7 +1,5 @@
 # unit-4-game
 
-STARS WARS - RPG game
-
 ![Logo of the project](assets/images/starwarsGame.png)
 
 # STARS WARS - RPG game
